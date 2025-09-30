@@ -19,6 +19,10 @@ const getServerStatus = async () => {
 const serverKvCheck = async (serverStatus, send = true) => {
   const newStatus = serverStatus[SERVER_NAME]
   const kvStatus = statusCache[SERVER_NAME]
+  if (!newStatus || !kvStatus) {
+    // don't send
+    return
+  }
   if (kvStatus !== newStatus ) { // debug always notify
     statusCache[SERVER_NAME] = newStatus
     if (send) await postDiscord(newStatus)
